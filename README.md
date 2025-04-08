@@ -350,3 +350,97 @@ For support, please open an issue in the GitHub repository.
 2. Add data persistence layer
 3. Create basic monitoring dashboard
 4. Enhance error handling 
+
+# Prometheus Trading Bot v0 Integration
+
+This project implements a secure integration between your NextJS frontend and your Prometheus Trading Bot API using Vercel's v0 functions.
+
+## Setup Instructions
+
+### 1. Environment Variables
+
+Create a `.env.local` file with the following variables:
+
+```
+# Trading Bot API Configuration
+CURSOR_AI_API_KEY=your-api-key
+CURSOR_AI_API_URL=https://your-trading-bot-api.com/api
+NEXT_PUBLIC_CURSOR_AI_API_URL=/api/cursor-ai-proxy
+
+# Other configuration
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Run Development Server
+
+```bash
+npm run dev
+```
+
+### 4. Build for Production
+
+```bash
+npm run build
+```
+
+## Architecture
+
+### Client-Side Integration
+
+The frontend uses the `cursor-ai-client.ts` library to communicate with your trading bot API. This client handles:
+
+- Formatting requests
+- Error handling
+- Type safety
+
+All client-side requests are routed through the secure server-side proxy.
+
+### Server-Side Proxy
+
+The `/api/cursor-ai-proxy` routes handle secure communication with your trading bot API. The proxy:
+
+- Authenticates users
+- Verifies subscription status for premium features
+- Securely forwards requests with your API key
+- Hides sensitive credentials from the client
+
+### v0 Functions Support
+
+This integration is built to work with Vercel's v0 functions, which offer:
+
+- Increased timeout limits (up to 30 seconds)
+- Higher memory allocation
+- Edge runtime deployment
+- Automatic scaling
+
+## API Endpoints
+
+| Frontend Route | Backend Endpoint | Description |
+|----------------|------------------|-------------|
+| `/api/cursor-ai-proxy/generate-signals` | `/generate-signals` | Generate trading signals |
+| `/api/cursor-ai-proxy/market-analysis` | `/market-analysis` | Analyze market conditions |
+| `/api/cursor-ai-proxy/portfolio-optimization` | `/portfolio-optimization` | Optimize portfolio allocation |
+| `/api/cursor-ai-proxy/execute-trade` | `/execute-trade` | Execute trades |
+| `/api/cursor-ai-proxy/portfolio/:userId` | `/portfolio/:userId` | Get user portfolio data |
+
+## Security Considerations
+
+- API keys are never exposed to the client
+- All sensitive operations are performed server-side
+- User authentication protects all endpoints
+- Subscription checks gate premium features
+- Rate limiting can be implemented to prevent abuse
+
+## Next Steps
+
+1. Deploy your backend trading bot API
+2. Update the environment variables with your actual API URL and key
+3. Implement proper authentication
+4. Develop additional features using v0 functions
+5. Deploy to Vercel 
